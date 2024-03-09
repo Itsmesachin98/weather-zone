@@ -1,12 +1,22 @@
 const card = document.getElementById("card");
+const searchBtn = document.getElementById("search-btn");
 
+// This function will run whenever the page loads
 window.addEventListener("load", async () => {
     createOverlayAndLoader();
     createWeatherInfoCard();
-    createCityAndTemp();
     const allWeatherData = await sendDataToBacked("Godda");
-    getDateAndTime();
-    updateCityAndTemp(allWeatherData);
+    if (allWeatherData === 404) {
+        errorTemplate("images/error.png", "404 Error Occured!");
+    } else {
+        if (numberOfChildren() === 2) {
+            deleteWeatherInfo();
+        }
+
+        createCityAndTemp();
+        getDateAndTime();
+        updateCityAndTemp(allWeatherData);
+    }
     deleteOverlayAndLoader();
 });
 
@@ -66,6 +76,10 @@ const getDateAndTime = () => {
     return dateTime;
 };
 
+/*
+    This function will return the number of child element
+    stored inside the weather info card
+*/
 const numberOfChildren = () => {
     const cityTemp = document.querySelector(".city-temp");
     const numberOfChild = cityTemp.children.length;
@@ -73,13 +87,15 @@ const numberOfChildren = () => {
 };
 
 // This triggers when the search button is clicked
-document.getElementById("search-btn").addEventListener("click", async () => {
+searchBtn.addEventListener("click", async () => {
     if (cityName.value.trim() !== "") {
         createOverlayAndLoader();
         const allWeatherData = await sendDataToBacked(cityName.value);
         deleteOverlayAndLoader();
-        if (allWeatherData.cod === 200) {
-            console.log(allWeatherData);
+        if (allWeatherData === 404) {
+            deleteWeatherInfo();
+            errorTemplate("images/error.png", "404 Error Occured!");
+        } else if (allWeatherData.cod === 200) {
             if (numberOfChildren() === 2) {
                 deleteCityNotFoundTemplate();
                 createCityAndTemp();
@@ -91,12 +107,27 @@ document.getElementById("search-btn").addEventListener("click", async () => {
             }
         } else {
             deleteWeatherInfo();
-            createCityNotFoundTemplate();
+            errorTemplate("images/404-error.png", "City Not Found!");
         }
     }
 });
 
-// This function will create the weather information card
+/*
+    This function will create the child elements which will be stored
+    inside the weather info card.
+
+    This function will create something like this:
+
+    <span class="date-time">Date, Time</span>
+    <h2 class="city">City, Country</h2>
+    <div class="curr-temp">
+        <div class="svg">
+            <img src="images/clear_sky.svg" />
+        </div>
+        <span class="temp">Temperature</span>
+    </div>
+    <span class="feels-like">Feels like 35&deg;C. Clear sky.</span>
+*/
 const createCityAndTemp = () => {
     const dateTime = document.createElement("span");
     dateTime.classList.add("date-time");
@@ -130,7 +161,10 @@ const createCityAndTemp = () => {
     cityTemp.appendChild(feelsLike);
 };
 
-// This function will delete the weather information card
+/*
+    This function will delete the child elements which is stored
+    inside the weather info card
+*/
 const deleteWeatherInfo = () => {
     const cityTemp = document.querySelector(".city-temp");
     while (cityTemp.firstChild) {
@@ -138,8 +172,11 @@ const deleteWeatherInfo = () => {
     }
 };
 
-// This function will run when the city does not exist
-const createCityNotFoundTemplate = () => {
+/*
+    This function will run either when the city does not exist or
+    when there is some problem going on in the backend server
+*/
+const errorTemplate = (image, text) => {
     const cityTemp = document.querySelector(".city-temp");
     cityTemp.classList.add("city-not-exist");
 
@@ -147,12 +184,12 @@ const createCityNotFoundTemplate = () => {
     errorLogoContainer.classList.add("error-logo-container");
     const errorLogo = document.createElement("img");
     errorLogo.classList.add("error-logo");
-    errorLogo.src = "images/404-error.png";
+    errorLogo.src = image;
     errorLogoContainer.appendChild(errorLogo);
     cityTemp.appendChild(errorLogoContainer);
 
     const h3 = document.createElement("h3");
-    h3.innerText = "City Not Found!";
+    h3.innerText = text;
     cityTemp.appendChild(h3);
 };
 
@@ -234,6 +271,6 @@ const sendDataToBacked = async (city) => {
         const weatherData = await response.json();
         return weatherData;
     } catch (err) {
-        console.log("Could not fetch from the api");
+        return 404;
     }
 };
