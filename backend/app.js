@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -18,7 +20,7 @@ app.post("/", async (req, res) => {
 
 // This function sends the city name to openWeather and gives us the response
 const sendDataToOpenWeather = async (value) => {
-    const apiKey = "5a1edfd7b39974e2ea0a177487ce9cef";
+    const apiKey = process.env.API_KEY;
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${value}&appid=${apiKey}&units=metric`;
 
     try {
