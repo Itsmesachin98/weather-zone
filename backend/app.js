@@ -3,13 +3,12 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 8080;
 
 app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send("Server is running!");
 });
 
 app.post("/", async (req, res) => {
@@ -32,4 +31,10 @@ const sendDataToOpenWeather = async (value) => {
     }
 };
 
-app.listen(port, () => console.log(`Server started at port ${port}`));
+// app.listen(port, () => console.log(`Server started at port ${port}`));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    // console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
+});
