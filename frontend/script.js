@@ -260,7 +260,7 @@ const sendDataToBacked = async (city) => {
     };
 
     try {
-        const response = await fetch("http://localhost:8080/", {
+        const response = await fetch("https://weather-app-6h2o.onrender.com", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -274,3 +274,6 @@ const sendDataToBacked = async (city) => {
         return 404;
     }
 };
+
+// https://weather-app-6h2o.onrender.com/
+// http://localhost:8080/
