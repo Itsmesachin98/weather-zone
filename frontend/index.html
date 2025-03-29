@@ -7,18 +7,104 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <main>
-            <section id="card">
-                <div class="search-box">
+        <section id="interface">
+            <div class="left-pane">
+                <div class="search-bar">
+                    <input
+                        type="text"
+                        id="city-name"
+                        placeholder="Search City"
+                    />
+                    <div class="btn-container">
+                        <button class="btn" id="search-btn">
+                            <img
+                                class="search"
+                                src="images/search.png"
+                                alt=""
+                            />
+                        </button>
+                    </div>
+                </div>
+
+                <div class="weather-info">
+                    <div class="weather-img-container">
+                        <img
+                            class="weather-img"
+                            src="https://openweathermap.org/img/wn/01d@2x.png"
+                            alt=""
+                        />
+                    </div>
+                    <div>
+                        <span class="temp">38&deg;C</span>
+                    </div>
+                    <div>
+                        <span class="sky-status">Clear Sky</span>
+                    </div>
+
+                    <hr />
+
+                    <div>
+                        <span class="date">27 Mar 2025</span>
+                    </div>
+                    <div>
+                        <span class="day-and-time">Thrusday, 8:10 PM</span>
+                    </div>
+                    <div>
+                        <span class="day-status">Night</span>
+                    </div>
+
+                    <div>
+                        <span class="location">Godda, India</span>
+                    </div>
+                </div>
+
+                <!-- <div class="input-container">
                     <input
                         id="city-name"
                         type="text"
-                        placeholder="Search city"
+                        placeholder="Search City"
                     />
-                    <button id="search-btn">Search</button>
                 </div>
-            </section>
-        </main>
+
+                <div class="btn-container">
+                    <button class="btn" id="search-btn">Search</button>
+                </div> -->
+            </div>
+
+            <div class="right-pane">
+                <header class="header">
+                    <span>Today</span>
+                </header>
+                <div class="weather-details">
+                    <div class="weather-details-card"></div>
+                    <div class="weather-details-card"></div>
+                    <div class="weather-details-card"></div>
+                    <div class="weather-details-card"></div>
+                    <div class="weather-details-card"></div>
+                    <div class="weather-details-card"></div>
+                    <div class="weather-details-card"></div>
+                    <div class="weather-details-card"></div>
+                    <div class="weather-details-card"></div>
+                </div>
+                <footer class="footer">
+                    <span
+                        >All Data Provided By -
+                        <a href="https://www.accuweather.com/" target="_blank"
+                            >AccuWeather</a
+                        ></span
+                    >
+
+                    <span
+                        >Developed By -
+                        <a
+                            href="https://github.com/Itsmesachin98"
+                            target="_blank"
+                            >Sachin Mehra</a
+                        ></span
+                    >
+                </footer>
+            </div>
+        </section>
         <script src="script.js"></script>
     </body>
 </html>
