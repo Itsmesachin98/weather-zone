@@ -20,53 +20,39 @@ app.post("/", async (req, res) => {
 // This function sends the city name to openWeather and gives us the response
 const sendDataToOpenWeather = async (value) => {
     const apiKey = process.env.API_KEY;
-    let cityCode;
+    let cityLat, cityLon;
+    let aqi = "No Data";
+    let data = null;
 
-    // Url to get city code
-    const cityCodeUrl = `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${value}`;
+    // Url to get weather information
+    const weatherInfoUrl = `https://api.openweathermap.org/data/2.5/weather?q=${value}&appid=${apiKey}&units=metric`;
     try {
-        const response = await fetch(cityCodeUrl);
-        console.log(response);
-        if (response.status === 200) {
-            const data = await response.json();
+        const weatherResponse = await fetch(weatherInfoUrl);
+        data = await weatherResponse.json();
 
-            if (data === null) {
-                // The search bar is empty
-            } else if (data.length === 0) {
-                // The entered city is incorrect
-            } else {
-                cityCode = data[0].Key;
-                console.log(`${value}'s city code is ${cityCode}`);
-            }
+        if (data.cod === 200) {
+            cityLat = data.coord.lat;
+            cityLon = data.coord.lon;
         } else {
-            console.log("Unable to fetch url");
-            return;
+            return data;
         }
     } catch (error) {
-        console.log("Error occurred while fetching city code ", error);
-        return;
+        console.log("Error occurred while fetching url ", error);
+        return data;
     }
 
-    // Url to get weather info
+    // Url to get Air Qulaity Index (AQI) information
     try {
-        const weatherInfoUrl = `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${cityCode}?apikey=${apiKey}&details=true&metric=true`;
-        const weatherInfo = await fetch(weatherInfoUrl);
-        const weatherData = await weatherInfo.json();
-        console.log(weatherData);
+        const aqiInfoUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${cityLat}&lon=${cityLon}&appid=${apiKey}`;
+        const aqiResponse = await fetch(aqiInfoUrl);
+        const aqiData = await aqiResponse.json();
+        aqi = aqiData.list[0].main.aqi;
     } catch (error) {
         console.log("Error occurred while fetching weather info ", error);
     }
 
-    // try {
-    //     let data = 400;
-    //     const response = await fetch(url);
-    //     if (response.status === 200) {
-    //         data = await response.json();
-    //     }
-    //     return data;
-    // } catch (err) {
-    //     console.log("Could not fetch data from OpenWeather");
-    // }
+    data.aqi = aqi;
+    return data;
 };
 
 // app.listen(port, () => console.log(`Server started at port ${port}`));

@@ -35,10 +35,10 @@
                         />
                     </div>
                     <div>
-                        <span class="temp">38&deg;C</span>
+                        <span class="temp"></span>
                     </div>
                     <div>
-                        <span class="sky-status">Clear Sky</span>
+                        <span id="sky-status" class="sky-sta"></span>
                     </div>
 
                     <hr />
@@ -54,21 +54,9 @@
                     </div>
 
                     <div>
-                        <span class="location">Godda, India</span>
+                        <span id="location">Godda, India</span>
                     </div>
                 </div>
-
-                <!-- <div class="input-container">
-                    <input
-                        id="city-name"
-                        type="text"
-                        placeholder="Search City"
-                    />
-                </div>
-
-                <div class="btn-container">
-                    <button class="btn" id="search-btn">Search</button>
-                </div> -->
             </div>
 
             <div class="right-pane">
@@ -76,15 +64,43 @@
                     <span>Today</span>
                 </header>
                 <div class="weather-details">
-                    <div class="weather-details-card"></div>
-                    <div class="weather-details-card"></div>
-                    <div class="weather-details-card"></div>
-                    <div class="weather-details-card"></div>
-                    <div class="weather-details-card"></div>
-                    <div class="weather-details-card"></div>
-                    <div class="weather-details-card"></div>
-                    <div class="weather-details-card"></div>
-                    <div class="weather-details-card"></div>
+                    <div class="weather-details-card">
+                        <span class="head-text">Wind Speed</span>
+                        <span id="wind-speed" class="main-text"></span>
+                    </div>
+                    <div class="weather-details-card">
+                        <span class="head-text">Humidity</span>
+                        <span id="humidity" class="main-text"></span>
+                    </div>
+                    <div class="weather-details-card">
+                        <span class="head-text">Real Feel</span>
+                        <span id="real-feel" class="main-text"></span>
+                    </div>
+                    <div class="weather-details-card">
+                        <span class="head-text">AQI</span>
+                        <span id="aqi" class="main-text"></span>
+                    </div>
+                    <div class="weather-details-card">
+                        <span class="head-text">Pressure</span>
+                        <span id="pressure" class="main-text"></span>
+                    </div>
+                    <div class="weather-details-card">
+                        <span class="head-text">Visibility</span>
+                        <span id="visibility" class="main-text"></span>
+                    </div>
+                    <div class="weather-details-card">
+                        <span class="head-text">Temperature</span>
+                        <span id="temp-min" class="main-text"></span>
+                        <span id="temp-max" class="main-text"></span>
+                    </div>
+                    <div class="weather-details-card">
+                        <span class="head-text">Sun</span>
+                        <span id="sun-rise-set" class="main-text"></span>
+                    </div>
+                    <div class="weather-details-card">
+                        <span class="head-text">Sea Level</span>
+                        <span id="sea-level" class="main-text"></span>
+                    </div>
                 </div>
                 <footer class="footer">
                     <span

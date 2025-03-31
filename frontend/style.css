@@ -156,7 +156,7 @@ hr {
     margin: 1.6rem 0 4rem 0;
 }
 
-.location {
+#location {
     margin-top: 4rem;
     font-size: 4rem;
 }
@@ -180,9 +180,25 @@ hr {
 }
 
 .weather-details-card {
-    background: #748cf1;
     height: 14rem;
+    padding: 1.6rem;
+    background: #748cf1;
     border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.head-text,
+.main-text {
+    color: #fff;
+}
+
+.head-text {
+    margin-bottom: 0.5rem;
+}
+
+.main-text {
+    font-size: 2.4rem;
 }
 
 .footer {

@@ -8,7 +8,12 @@ window.addEventListener("load", async () => {
     // createOverlayAndLoader();
     // createWeatherInfoCard();
     allWeatherData = await sendDataToBacked("Godda");
-    console.log(allWeatherData);
+    if (allWeatherData === null) {
+        console.log("Error occured");
+    } else {
+        updateWeatherInfo(allWeatherData);
+    }
+
     // if (allWeatherData === 404) {
     //     errorTemplate("images/error.png", "404 Error Occured!");
     // } else {
@@ -26,22 +31,63 @@ window.addEventListener("load", async () => {
 // ============== EVENT LISTENERS ==============
 
 searchBtn.addEventListener("click", async () => {
-    // console.log(cityName.value);
     allWeatherData = await sendDataToBacked(cityName.value);
-    console.log(allWeatherData);
     updateWeatherInfo(allWeatherData);
 });
 
 // ============== FUNCTIONS ==============
 
+function capilazeWeatherDescription(description) {
+    return description
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+}
+
 function updateWeatherInfo(weatherInfo) {
     document.querySelector(".temp").innerHTML = `${Math.round(
-        weatherInfo.current.temp_c
+        weatherInfo.main.temp
     )}&deg;C`;
 
-    document.querySelector(
-        ".weather-img"
-    ).src = `https:${weatherInfo.current.condition.icon}`;
+    document.getElementById(
+        "sky-status"
+    ).innerText = `${capilazeWeatherDescription(
+        weatherInfo.weather[0].description
+    )}`;
+
+    document.getElementById(
+        "location"
+    ).innerText = `${weatherInfo.name}, ${weatherInfo.sys.country}`;
+
+    document.getElementById("wind-speed").innerHTML = `${Math.round(
+        weatherInfo.wind.speed
+    )}km/s`;
+
+    document.getElementById(
+        "humidity"
+    ).innerText = `${weatherInfo.main.humidity}%`;
+
+    document.getElementById("real-feel").innerHTML = `${Math.round(
+        weatherInfo.main.feels_like
+    )}&deg;C`;
+
+    document.getElementById("aqi").innerText = `${weatherInfo.aqi}`;
+
+    document.getElementById(
+        "pressure"
+    ).innerText = `${weatherInfo.main.pressure}`;
+
+    document.getElementById("visibility").innerText = `${
+        weatherInfo.visibility / 1000
+    }km`;
+
+    document.getElementById("temp-min").innerHTML = `Min: ${Math.round(
+        weatherInfo.main.temp_min
+    )}&deg;C`;
+    document.getElementById("temp-max").innerHTML = `Max: ${Math.round(
+        weatherInfo.main.temp_min
+    )}&deg;C`;
+    document.getElementById("sun-rise-set").innerText = "No Data";
 }
 
 /*
