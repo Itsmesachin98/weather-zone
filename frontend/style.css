@@ -1,11 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wdth,wght@75..100,300..800&display=swap");
 
-/* body-background-color: #d1cecf
-left-background-color: #fff
-rigth-background-color: #efefef
-card-background-color: #748CF1
-search-background-color: #eeedf0 */
-
 * {
     margin: 0;
     padding: 0;
@@ -24,6 +18,7 @@ body {
     height: 100vh;
     box-sizing: border-box;
     background-color: #d1cecf;
+    position: relative;
 }
 
 input {
@@ -60,6 +55,19 @@ h3 {
 
 span {
     display: block;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #interface {
@@ -377,3 +385,44 @@ h3,
     width: 48px;
     height: 48px;
 } */
+
+/* 
+   Loader Animation by sawantyash11 (from Uiverse.io)
+   
+   This CSS snippet creates a simple loading animation with a growing and shrinking effect.
+   The loader is a thin bar that fills up and empties repeatedly.
+*/
+.loader {
+    display: block;
+    --height-of-loader: 4px;
+    --loader-color: #ff0000;
+    width: 130px;
+    height: var(--height-of-loader);
+    border-radius: 30px;
+    background-color: #000000;
+    position: relative;
+}
+
+.loader::before {
+    content: "";
+    position: absolute;
+    background: var(--loader-color);
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    border-radius: 30px;
+    animation: moving 1s ease-in-out infinite;
+}
+
+@keyframes moving {
+    50% {
+        width: 100%;
+    }
+
+    100% {
+        width: 0;
+        right: 0;
+        left: unset;
+    }
+}
