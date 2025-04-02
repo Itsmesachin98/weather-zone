@@ -49,13 +49,40 @@ const weatherSvgs = {
 // This function will run whenever the page loads
 window.addEventListener("load", async () => {
     createOverlayAndLoader();
-    allWeatherData = await sendDataToBacked("Godda");
-    if (allWeatherData === null) {
-        console.log("Error occured");
-    } else {
-        updateWeatherInfo(allWeatherData);
+
+    try {
+        const userLocation = await getUserLocation();
+        allWeatherData = await sendLatLonToBackend(
+            userLocation.lat,
+            userLocation.lon
+        );
+
+        console.log(allWeatherData);
+        if (allWeatherData === null) {
+            console.log("Error occured");
+        } else {
+            updateWeatherInfo(allWeatherData);
+            deleteOverlayAndLoader();
+        }
+    } catch (error) {
+        console.error("Failed to get location:", error);
+    } finally {
         deleteOverlayAndLoader();
     }
+
+    // const userLocation = getUserLocation();
+    // allWeatherData = await sendLatLonToBackend(
+    //     userLocation.lat,
+    //     userLocation.lon
+    // );
+
+    // // allWeatherData = await sendDataToBacked("Godda");
+    // if (allWeatherData === null) {
+    //     console.log("Error occured");
+    // } else {
+    //     updateWeatherInfo(allWeatherData);
+    //     deleteOverlayAndLoader();
+    // }
 
     // if (allWeatherData === 404) {
     //     errorTemplate("images/error.png", "404 Error Occured!");
@@ -86,6 +113,28 @@ searchBtn.addEventListener("click", async () => {
 });
 
 // ============== FUNCTIONS ==============
+
+function getUserLocation() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    resolve({
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude,
+                    });
+                },
+                (error) => {
+                    console.error("Error getting location:", error);
+                    reject(error);
+                }
+            );
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+            reject("Geolocation not supported");
+        }
+    });
+}
 
 function getCurrentDate() {
     const date = new Date();
@@ -153,6 +202,8 @@ function deleteOverlayAndLoader() {
     }
 }
 
+// Capitalize the first letter of each word in the weather description
+// Example: "clear sky" becomes "Clear Sky"
 function capilazeWeatherDescription(description) {
     return description
         .split(" ")
@@ -250,11 +301,33 @@ function updateWeatherInfo(weatherInfo) {
 
 async function sendDataToBacked(city) {
     const data = {
-        cityName: city,
+        city: city,
     };
 
     try {
         const response = await fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        const weatherData = await response.json();
+        return weatherData;
+    } catch (err) {
+        return 404;
+    }
+}
+
+async function sendLatLonToBackend(lat, lon) {
+    const data = {
+        lat: lat,
+        lon: lon,
+    };
+
+    try {
+        const response = await fetch("http://localhost:3000/latlon", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
