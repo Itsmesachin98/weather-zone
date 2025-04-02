@@ -20,16 +20,6 @@ const weatherSvgs = {
 	    <path fill="currentColor" d="M7.46 14.41c0-.19.07-.36.2-.5a.63.63 0 0 1 .48-.21c.19 0 .36.07.49.21s.2.3.2.5c0 .19-.07.35-.2.48a.673.673 0 0 1-.96 0a.62.62 0 0 1-.21-.48m1.98 0c0-.19.07-.36.2-.5a.63.63 0 0 1 .48-.21h3.23l-2.28-2.28a.6.6 0 0 1-.21-.47c0-.19.07-.35.21-.49s.3-.21.49-.21s.35.07.49.21l2.27 2.27V9.52c0-.19.07-.36.21-.5s.3-.21.5-.21q.285 0 .48.21c.13.14.2.3.2.5v3.23l2.29-2.3q.21-.21.48-.21c.18 0 .35.07.49.21c.12.14.18.3.18.49s-.06.35-.18.47l-2.28 2.28h3.23c.18 0 .34.07.47.21s.2.3.2.5c0 .18-.07.34-.2.47a.65.65 0 0 1-.47.2h-3.23l2.29 2.29c.12.12.18.28.18.47s-.06.35-.18.49c-.14.14-.31.21-.49.21s-.35-.07-.48-.21l-2.29-2.3v3.24c0 .19-.07.36-.2.49s-.29.2-.48.2a.72.72 0 0 1-.5-.2a.65.65 0 0 1-.21-.49v-3.22l-2.27 2.27c-.14.14-.3.21-.49.21s-.35-.07-.49-.21s-.21-.3-.21-.49s.07-.34.21-.47l2.3-2.29h-3.24c-.19 0-.35-.07-.48-.2a.51.51 0 0 1-.22-.45m.01 4.84c0-.18.07-.35.21-.48c.12-.14.28-.21.47-.21s.35.07.49.21q.21.21.21.48c0 .18-.07.35-.21.48c-.14.14-.3.21-.49.21s-.35-.07-.47-.21a.63.63 0 0 1-.21-.48m0-9.71c0-.18.07-.35.21-.48c.12-.14.28-.21.47-.21s.35.07.49.21q.21.21.21.48c0 .27-.07.35-.21.49s-.3.21-.49.21s-.35-.07-.47-.21a.68.68 0 0 1-.21-.49m4.85 11.71c0-.18.07-.34.21-.47s.3-.2.5-.2c.19 0 .35.07.48.2s.2.29.2.47c0 .19-.07.36-.2.49s-.29.2-.48.2a.72.72 0 0 1-.5-.2a.64.64 0 0 1-.21-.49m0-13.71c0-.19.07-.36.21-.49s.3-.2.5-.2c.19 0 .35.07.48.2a.68.68 0 0 1-.48 1.16a.72.72 0 0 1-.5-.2a.62.62 0 0 1-.21-.47m4.87 11.71c0-.18.07-.35.21-.48c.12-.14.28-.21.47-.21s.35.07.49.21q.21.21.21.48c0 .18-.07.35-.21.48c-.14.14-.3.21-.49.21s-.35-.07-.47-.21a.63.63 0 0 1-.21-.48m0-9.71c0-.18.07-.35.21-.48c.12-.14.28-.21.47-.21s.35.07.49.21q.21.21.21.48c0 .27-.07.35-.21.49s-.3.21-.49.21s-.35-.07-.47-.21a.68.68 0 0 1-.21-.49m2 4.87c0-.19.07-.36.2-.5s.3-.21.49-.21c.18 0 .34.07.47.21s.2.3.2.5c0 .18-.07.34-.2.47a.68.68 0 0 1-.96 0a.65.65 0 0 1-.2-.47" />
     </svg>`,
 
-    Mist: `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
-	    <path fill="currentColor" d="M7.33 16.58c0-.23.08-.41.23-.56c.16-.15.37-.22.64-.22h5.71c.27 0 .48.07.64.22s.23.33.23.56c0 .27-.08.49-.23.64s-.37.23-.64.23H8.2c-.27 0-.48-.08-.64-.23s-.23-.36-.23-.64m0-5.91c0-.22.08-.41.23-.55c.16-.15.37-.22.64-.22h2.96c.27 0 .48.07.64.22c.16.14.24.33.24.55c0 .27-.08.48-.24.64s-.37.24-.64.24H8.2c-.27 0-.48-.08-.64-.23s-.23-.38-.23-.65m.99 8.87c0-.22.09-.42.28-.6c.18-.18.39-.28.6-.28c.26 0 .46.09.62.27s.24.38.24.61c0 .27-.08.49-.23.65s-.36.23-.63.23a.87.87 0 0 1-.61-.24c-.19-.17-.27-.38-.27-.64m1.42-5.93c0-.23.07-.44.22-.61q.225-.27.54-.27c.26 0 .48.09.64.27s.24.38.24.61c0 .27-.08.49-.23.65c-.16.16-.37.23-.65.23c-.23 0-.41-.08-.55-.24s-.21-.37-.21-.64m.99 5.93a.87.87 0 0 1 .88-.88h3.83l.88.88c0 .26-.09.47-.27.64s-.38.24-.61.24h-3.83c-.27 0-.49-.08-.65-.24s-.23-.37-.23-.64m1.32-5.93c0-.22.09-.42.28-.6c.18-.18.39-.28.6-.28h3.83q.39 0 .63.27c.16.18.24.38.24.61c0 .27-.08.49-.23.65c-.16.16-.37.23-.64.23h-3.83a.87.87 0 0 1-.61-.24c-.18-.16-.27-.37-.27-.64m.76-2.94c0-.22.08-.41.24-.55s.37-.22.64-.22h5.71c.23 0 .43.08.61.23q.27.225.27.54c0 .26-.09.48-.27.64s-.38.24-.61.24h-5.71c-.27 0-.49-.08-.65-.24s-.23-.37-.23-.64m2.63 5.91c0-.21.09-.4.27-.55a.926.926 0 0 1 1.22 0a.7.7 0 0 1 .27.55q0 .39-.27.63c-.18.16-.38.24-.61.24a.87.87 0 0 1-.61-.24q-.27-.225-.27-.63m1.54 2.96c0-.23.08-.44.24-.61q.24-.27.63-.27h1.87c.26 0 .47.09.63.26s.24.38.24.62c0 .27-.08.49-.23.65s-.37.23-.64.23h-1.87c-.27 0-.48-.08-.64-.23c-.15-.16-.23-.38-.23-.65m.87-2.96c0-.21.09-.4.27-.55s.38-.23.61-.23h3.07c.22 0 .4.08.54.23s.22.33.22.55c0 .27-.07.48-.21.64s-.32.23-.55.23h-3.07a.87.87 0 0 1-.61-.24q-.27-.225-.27-.63m.44-2.97c0-.22.09-.42.28-.6c.18-.18.39-.28.6-.28h1.96q.315 0 .54.27c.15.18.23.38.23.61c0 .27-.07.48-.22.64c-.14.16-.33.24-.55.24h-1.96a.87.87 0 0 1-.61-.24c-.18-.16-.27-.37-.27-.64m2.74-2.94c0-.22.07-.4.22-.55s.33-.22.55-.22c.27 0 .48.07.64.22c.16.14.24.33.24.55c0 .27-.08.48-.24.64s-.37.24-.64.24c-.23 0-.41-.08-.55-.24c-.15-.16-.22-.37-.22-.64" />
-    </svg>`,
-    Smoke: `images/mist.png`,
-    Haze: `images/mist.png`,
-    Dust: `images/mist.png`,
-    Fog: `images/mist.png`,
-    Sand: `images/mist.png`,
-    Ash: `images/mist.png`,
-    Squall: `images/mist.png`,
     Tornado: `<svg class="weather-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
 	    <path fill="currentColor" d="M4.13 15.19q0 1.035 1.08 1.77c1.32.93 3.31 1.39 5.98 1.39c1.2 0 2.31-.1 3.34-.31c1.08-.23 1.97-.6 2.65-1.1s1.03-1.08 1.03-1.76c0-.21-.04-.41-.12-.62q2.085-.51 3.27-1.38c1.185-.87 1.19-1.25 1.19-2q0-.285-.09-.6c2.29-.81 3.43-1.9 3.43-3.28c0-.88-.5-1.66-1.49-2.34q-2.925-1.95-8.58-1.95c-1.78 0-3.39.16-4.83.47c-1.57.32-2.83.82-3.79 1.5S5.76 6.44 5.76 7.31c0 .52.16.99.48 1.42q-1.77 1.005-1.77 2.46c0 .75.37 1.41 1.1 1.98c-.96.56-1.44 1.23-1.44 2.02m.6 4.5c0 .73.45 1.31 1.35 1.72s2.04.62 3.41.62c1.39 0 2.53-.21 3.44-.62s1.36-.99 1.36-1.72c0-.27-.09-.5-.26-.69s-.4-.28-.67-.28c-.22 0-.42.08-.6.23s-.29.35-.34.57c-.2.16-.56.3-1.1.43s-1.15.2-1.83.2c-1.1 0-2-.16-2.68-.47c.16-.16.24-.36.26-.6s-.04-.45-.15-.62c-.16-.21-.36-.35-.61-.4s-.48 0-.7.13c-.59.41-.88.9-.88 1.5m1.28-4.5c0-.01.06-.07.19-.18c.09-.09.28-.2.56-.34s.61-.25.96-.35l.12-.06q2.43.81 5.67.81c.95 0 1.81-.05 2.58-.16l.26.23c-.09.16-.3.32-.63.5c-.4.21-1.02.41-1.86.57s-1.73.25-2.67.25s-1.83-.08-2.67-.25s-1.47-.36-1.88-.57q-.51-.21-.63-.45m.11 8.42c0 .63.36 1.12 1.08 1.46s1.61.51 2.67.51c1.08 0 1.99-.17 2.72-.51s1.1-.83 1.1-1.46c0-.25-.09-.48-.28-.67s-.41-.29-.66-.29c-.47 0-.78.24-.92.72c-.39.24-1.04.37-1.96.37c-.8 0-1.44-.12-1.92-.37c-.15-.48-.45-.72-.92-.72c-.25 0-.47.09-.64.28s-.27.41-.27.68m.21-12.42c0-.08.05-.17.15-.28c.24-.3.72-.6 1.42-.88c1.92 1.03 4.56 1.54 7.91 1.54c1.71 0 3.32-.16 4.82-.47v.09c0 .15-.09.3-.28.45c-.41.36-1.17.7-2.29 1.03q-1.815.54-4.56.54c-1.84 0-3.36-.18-4.57-.54c-1.16-.32-1.93-.66-2.32-1.02c-.19-.15-.28-.3-.28-.46m1.3-3.88c0-.18.12-.37.35-.59c.45-.42 1.35-.82 2.68-1.21c1.43-.42 3.14-.63 5.14-.63q3.015 0 5.19.63c1.35.39 2.24.8 2.68 1.22c.22.22.34.42.34.59s-.11.35-.34.56c-.44.42-1.33.83-2.68 1.23c-1.45.42-3.17.63-5.19.63c-2 0-3.72-.21-5.14-.63c-1.34-.4-2.24-.81-2.68-1.24c-.23-.21-.35-.39-.35-.56" />
     </svg>`,
@@ -58,7 +48,6 @@ const weatherSvgs = {
 
 // This function will run whenever the page loads
 window.addEventListener("load", async () => {
-    // createWeatherInfoCard();
     createOverlayAndLoader();
     allWeatherData = await sendDataToBacked("Godda");
     if (allWeatherData === null) {
@@ -85,17 +74,66 @@ window.addEventListener("load", async () => {
 // ============== EVENT LISTENERS ==============
 
 searchBtn.addEventListener("click", async () => {
-    createOverlayAndLoader();
     if (cityName.value === "") {
-        allWeatherData = await sendDataToBacked("Godda");
-    } else {
-        allWeatherData = await sendDataToBacked(cityName.value);
+        return;
     }
+
+    createOverlayAndLoader();
+    allWeatherData = await sendDataToBacked(cityName.value);
+    console.log(allWeatherData);
     updateWeatherInfo(allWeatherData);
     deleteOverlayAndLoader();
 });
 
 // ============== FUNCTIONS ==============
+
+function getCurrentDate() {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.getMonth(); // Month is 0-based
+    const year = date.getFullYear();
+
+    const weekday = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+    ];
+
+    const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
+
+    const dayName = weekday[date.getDay()];
+    const monthName = months[month];
+
+    return { day, dayName, monthName, year };
+}
+
+function getCurrentTime() {
+    let time = new Intl.DateTimeFormat("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "Asia/Kolkata",
+    }).format(new Date());
+
+    return time.replace("am", "AM").replace("pm", "PM");
+}
 
 function createOverlayAndLoader() {
     const scriptTag = document.querySelector("script");
@@ -123,6 +161,16 @@ function capilazeWeatherDescription(description) {
 }
 
 function updateWeatherInfo(weatherInfo) {
+    // Update the date displayed on the page in the format: "Day Month Year" (e.g., "2 Apr 2025")
+    document.querySelector(".date").innerText = `${getCurrentDate().day} ${
+        getCurrentDate().monthName
+    } ${getCurrentDate().year}`;
+
+    // Update the day and time displayed on the page in the format: "Day, HH:MM AM/PM" (e.g., "Wednesday, 10:30 AM")
+    document.querySelector(".day-and-time").innerText = `${
+        getCurrentDate().dayName
+    }, ${getCurrentTime()}`;
+
     const weatherMain = weatherInfo.weather[0].main;
     const weatherDescription = weatherInfo.weather[0].description;
 
@@ -242,40 +290,6 @@ async function sendDataToBacked(city) {
 //         }
 //     });
 // });
-
-// const months = {
-//     0: "January",
-//     1: "February",
-//     2: "March",
-//     3: "April",
-//     4: "May",
-//     5: "June",
-//     6: "July",
-//     7: "August",
-//     8: "September",
-//     9: "October",
-//     10: "November",
-//     11: "December",
-// };
-
-// // This function updates the current date and time
-// const getDateAndTime = () => {
-//     const currDate = new Date();
-//     const date = currDate.getDate();
-//     const month = currDate.getMonth();
-//     let hour = currDate.getHours();
-//     const ampm = hour >= 12 ? "pm" : "am";
-//     hour = hour % 12 || 12;
-//     const minute = currDate.getMinutes();
-
-//     const dateTime = document.querySelector(".date-time");
-//     dateTime.innerText = `${months[month].slice(
-//         0,
-//         3
-//     )} ${date}, ${hour}:${minute}${ampm}`;
-
-//     return dateTime;
-// };
 
 // /*
 //     This function will return the number of child element
