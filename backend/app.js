@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const apiKey = process.env.API_KEY;
+const apiKey = process.env.WEATHER_API_KEY;
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -37,6 +37,7 @@ app.post("/latlon", async (req, res) => {
 // It first retrieves the AQI using the `getAqiFromOpenWeather` function, then fetches weather data
 // from OpenWeather's API. If successful, it combines the AQI with the weather data and returns it.
 async function sendLatLonToOpenWeather(lat, lon) {
+    const cityTime = await getCityLocalTime(lat, lon);
     const aqi = await getAqiFromOpenWeather(lat, lon);
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
@@ -45,7 +46,8 @@ async function sendLatLonToOpenWeather(lat, lon) {
         const data = await response.json();
 
         if (data.cod === 200) {
-            data.aqi = aqi;
+            data.aqi = aqi.list[0].main.aqi;
+            data.formatted = cityTime.formatted;
             return data;
         }
     } catch (error) {
@@ -76,18 +78,25 @@ async function sendDataToOpenWeather(value) {
         return data;
     }
 
-    // Url to get Air Qulaity Index (AQI) information
-    try {
-        const aqiInfoUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${cityLat}&lon=${cityLon}&appid=${apiKey}`;
-        const aqiResponse = await fetch(aqiInfoUrl);
-        const aqiData = await aqiResponse.json();
-        aqi = aqiData.list[0].main.aqi;
-    } catch (error) {
-        console.log("Error occurred while fetching weather info ", error);
-    }
-
+    const cityTime = await getCityLocalTime(cityLat, cityLon);
+    const airPollutionData = await getAqiFromOpenWeather(cityLat, cityLon);
+    aqi = airPollutionData.list[0].main.aqi;
     data.aqi = aqi;
+    data.formatted = cityTime.formatted;
     return data;
+
+    // Url to get Air Qulaity Index (AQI) information
+    // try {
+    //     const aqiInfoUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${cityLat}&lon=${cityLon}&appid=${apiKey}`;
+    //     const aqiResponse = await fetch(aqiInfoUrl);
+    //     const aqiData = await aqiResponse.json();
+    //     aqi = aqiData.list[0].main.aqi;
+    // } catch (error) {
+    //     console.log("Error occurred while fetching weather info ", error);
+    // }
+
+    // data.aqi = aqi;
+    // return data;
 }
 
 async function getAqiFromOpenWeather(lat, lon) {
@@ -96,9 +105,22 @@ async function getAqiFromOpenWeather(lat, lon) {
     try {
         const response = await fetch(url);
         const data = await response.json();
-        return data.list[0].main.aqi;
+        return data;
     } catch (error) {
         console.log("Error occurred while fetching the AQI url ", error);
+    }
+}
+
+async function getCityLocalTime(lat, lon) {
+    const apiKey = process.env.TIMEZONE_DB_API_KEY;
+    const url = `http://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=position&lat=${lat}&lng=${lon}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log("Error occurred while fetching the timezone url ", error);
     }
 }
 

@@ -57,7 +57,6 @@ window.addEventListener("load", async () => {
             userLocation.lon
         );
 
-        console.log(allWeatherData);
         if (allWeatherData === null) {
             console.log("Error occured");
         } else {
@@ -107,7 +106,6 @@ searchBtn.addEventListener("click", async () => {
 
     createOverlayAndLoader();
     allWeatherData = await sendDataToBacked(cityName.value);
-    console.log(allWeatherData);
     updateWeatherInfo(allWeatherData);
     deleteOverlayAndLoader();
 });
@@ -173,15 +171,32 @@ function getCurrentDate() {
     return { day, dayName, monthName, year };
 }
 
-function getCurrentTime() {
-    let time = new Intl.DateTimeFormat("en-IN", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        timeZone: "Asia/Kolkata",
-    }).format(new Date());
+// function getCurrentTime() {
+//     let time = new Intl.DateTimeFormat("en-IN", {
+//         hour: "2-digit",
+//         minute: "2-digit",
+//         hour12: true,
+//         timeZone: "Asia/Kolkata",
+//     }).format(new Date());
 
-    return time.replace("am", "AM").replace("pm", "PM");
+//     return time.replace("am", "AM").replace("pm", "PM");
+// }
+
+function formatTimeTo12Hour(currTime) {
+    const time = currTime;
+    const [hour, minute] = time.split(":").map(Number);
+    const ampm = hour >= 12 ? "PM" : "AM";
+    const hour12 = hour % 12 || 12; // Convert 0 to 12 for 12 AM
+    const formattedTime = `${hour12}:${minute
+        .toString()
+        .padStart(2, "0")} ${ampm}`;
+
+    const hours = parseInt(time.split(":")[0], 10);
+    const period = hours >= 6 && hours < 18 ? "Day" : "Night";
+
+    console.log(period); // Output: "Night"
+
+    return { formattedTime, period };
 }
 
 function createOverlayAndLoader() {
@@ -212,6 +227,7 @@ function capilazeWeatherDescription(description) {
 }
 
 function updateWeatherInfo(weatherInfo) {
+    console.log(weatherInfo);
     // Update the date displayed on the page in the format: "Day Month Year" (e.g., "2 Apr 2025")
     document.querySelector(".date").innerText = `${getCurrentDate().day} ${
         getCurrentDate().monthName
@@ -220,7 +236,14 @@ function updateWeatherInfo(weatherInfo) {
     // Update the day and time displayed on the page in the format: "Day, HH:MM AM/PM" (e.g., "Wednesday, 10:30 AM")
     document.querySelector(".day-and-time").innerText = `${
         getCurrentDate().dayName
-    }, ${getCurrentTime()}`;
+    }, ${
+        formatTimeTo12Hour(weatherInfo.formatted.substring(11, 16))
+            .formattedTime
+    }`;
+
+    document.querySelector(".day-status").innerText = `${
+        formatTimeTo12Hour(weatherInfo.formatted.substring(11, 16)).period
+    }`;
 
     const weatherMain = weatherInfo.weather[0].main;
     const weatherDescription = weatherInfo.weather[0].description;
