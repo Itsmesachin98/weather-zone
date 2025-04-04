@@ -171,30 +171,41 @@ function getCurrentDate() {
     return { day, dayName, monthName, year };
 }
 
-// function getCurrentTime() {
-//     let time = new Intl.DateTimeFormat("en-IN", {
-//         hour: "2-digit",
-//         minute: "2-digit",
-//         hour12: true,
-//         timeZone: "Asia/Kolkata",
-//     }).format(new Date());
+function formattedSunriseSunsetTime(time) {
+    const timeStr = time;
+    const date = new Date(timeStr);
 
-//     return time.replace("am", "AM").replace("pm", "PM");
-// }
+    // Get hours and minutes
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    // Determine AM or PM
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    // Convert to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // hour 0 should be 12
+
+    // Format minutes with leading zero if needed
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+
+    // Final formatted time
+    const formattedTime = `${hours}:${formattedMinutes} ${ampm}`;
+
+    return formattedTime;
+}
 
 function formatTimeTo12Hour(currTime) {
     const time = currTime;
     const [hour, minute] = time.split(":").map(Number);
     const ampm = hour >= 12 ? "PM" : "AM";
-    const hour12 = hour % 12 || 12; // Convert 0 to 12 for 12 AM
+    const hour12 = hour % 12 || 12;
     const formattedTime = `${hour12}:${minute
         .toString()
         .padStart(2, "0")} ${ampm}`;
 
     const hours = parseInt(time.split(":")[0], 10);
     const period = hours >= 6 && hours < 18 ? "Day" : "Night";
-
-    console.log(period); // Output: "Night"
 
     return { formattedTime, period };
 }
@@ -227,7 +238,10 @@ function capilazeWeatherDescription(description) {
 }
 
 function updateWeatherInfo(weatherInfo) {
-    console.log(weatherInfo);
+    const formattedTimeAndPeriod = formatTimeTo12Hour(
+        weatherInfo.formatted.substring(11, 16)
+    );
+
     // Update the date displayed on the page in the format: "Day Month Year" (e.g., "2 Apr 2025")
     document.querySelector(".date").innerText = `${getCurrentDate().day} ${
         getCurrentDate().monthName
@@ -236,14 +250,11 @@ function updateWeatherInfo(weatherInfo) {
     // Update the day and time displayed on the page in the format: "Day, HH:MM AM/PM" (e.g., "Wednesday, 10:30 AM")
     document.querySelector(".day-and-time").innerText = `${
         getCurrentDate().dayName
-    }, ${
-        formatTimeTo12Hour(weatherInfo.formatted.substring(11, 16))
-            .formattedTime
-    }`;
+    }, ${formattedTimeAndPeriod.formattedTime}`;
 
-    document.querySelector(".day-status").innerText = `${
-        formatTimeTo12Hour(weatherInfo.formatted.substring(11, 16)).period
-    }`;
+    document.querySelector(
+        ".day-status"
+    ).innerText = `${formattedTimeAndPeriod.period}`;
 
     const weatherMain = weatherInfo.weather[0].main;
     const weatherDescription = weatherInfo.weather[0].description;
@@ -313,19 +324,25 @@ function updateWeatherInfo(weatherInfo) {
         weatherInfo.visibility / 1000
     }km`;
 
-    document.getElementById("temp-min").innerHTML = `Min: ${Math.round(
+    document.getElementById("min-temp").innerHTML = `${Math.round(
         weatherInfo.main.temp_min
     )}&deg;C`;
-    document.getElementById("temp-max").innerHTML = `Max: ${Math.round(
+
+    document.getElementById("max-temp").innerHTML = `${Math.round(
         weatherInfo.main.temp_min
     )}&deg;C`;
-    document.getElementById("sun-rise-set").innerText = "No Data";
+
+    document.getElementById(
+        "sunrise-time"
+    ).innerText = `${formattedSunriseSunsetTime(weatherInfo.sunrise)}`;
+
+    document.getElementById(
+        "sunset-time"
+    ).innerText = `${formattedSunriseSunsetTime(weatherInfo.sunset)}`;
 }
 
 async function sendDataToBacked(city) {
-    const data = {
-        city: city,
-    };
+    const data = { city };
 
     try {
         const response = await fetch("http://localhost:3000/", {
@@ -344,10 +361,7 @@ async function sendDataToBacked(city) {
 }
 
 async function sendLatLonToBackend(lat, lon) {
-    const data = {
-        lat: lat,
-        lon: lon,
-    };
+    const data = { lat, lon };
 
     try {
         const response = await fetch("http://localhost:3000/latlon", {
@@ -364,207 +378,6 @@ async function sendLatLonToBackend(lat, lon) {
         return 404;
     }
 }
-
-/*
-    This function will create something like this
-    <div class="city-temp"></div>
-*/
-// const createWeatherInfoCard = () => {
-//     const cityTemp = document.createElement("div");
-//     cityTemp.classList.add("city-temp");
-//     card.appendChild(cityTemp);
-// };
-
-// // This function triggers when the input field is clicked
-// const cityName = document.getElementById("city-name");
-// cityName.addEventListener("click", () => {
-//     cityName.classList.add("click-animation");
-
-//     document.body.addEventListener("click", (evt) => {
-//         if (!cityName.contains(evt.target)) {
-//             cityName.classList.remove("click-animation");
-//         }
-//     });
-// });
-
-// /*
-//     This function will return the number of child element
-//     stored inside the weather info card
-// */
-// const numberOfChildren = () => {
-//     const cityTemp = document.querySelector(".city-temp");
-//     const numberOfChild = cityTemp.children.length;
-//     return numberOfChild;
-// };
-
-// // This triggers when the search button is clicked
-// searchBtn.addEventListener("click", async () => {
-//     if (cityName.value.trim() !== "") {
-//         createOverlayAndLoader();
-//         const allWeatherData = await sendDataToBacked(cityName.value);
-//         deleteOverlayAndLoader();
-//         if (allWeatherData === 404) {
-//             deleteWeatherInfo();
-//             errorTemplate("images/error.png", "404 Error Occured!");
-//         } else if (allWeatherData.cod === 200) {
-//             if (numberOfChildren() === 2) {
-//                 deleteCityNotFoundTemplate();
-//                 createCityAndTemp();
-//                 getDateAndTime();
-//                 updateCityAndTemp(allWeatherData);
-//             } else {
-//                 getDateAndTime();
-//                 updateCityAndTemp(allWeatherData);
-//             }
-//         } else {
-//             deleteWeatherInfo();
-//             errorTemplate("images/404-error.png", "City Not Found!");
-//         }
-//     }
-// });
-
-// /*
-//     This function will create the child elements which will be stored
-//     inside the weather info card.
-
-//     This function will create something like this:
-
-//     <span class="date-time">Date, Time</span>
-//     <h2 class="city">City, Country</h2>
-//     <div class="curr-temp">
-//         <div class="svg">
-//             <img src="images/clear_sky.svg" />
-//         </div>
-//         <span class="temp">Temperature</span>
-//     </div>
-//     <span class="feels-like">Feels like 35&deg;C. Clear sky.</span>
-// */
-// const createCityAndTemp = () => {
-//     const dateTime = document.createElement("span");
-//     dateTime.classList.add("date-time");
-
-//     const city = document.createElement("h2");
-//     city.classList.add("city");
-
-//     const currTemp = document.createElement("div");
-//     currTemp.classList.add("curr-temp");
-
-//     const svg = document.createElement("div");
-//     svg.classList.add("svg");
-
-//     const img = document.createElement("img");
-
-//     const temp = document.createElement("span");
-//     temp.classList.add("temp");
-
-//     svg.appendChild(img);
-//     currTemp.appendChild(svg);
-//     currTemp.appendChild(temp);
-
-//     const feelsLike = document.createElement("span");
-//     feelsLike.classList.add("feels-like");
-
-//     const cityTemp = document.querySelector(".city-temp");
-
-//     cityTemp.appendChild(dateTime);
-//     cityTemp.appendChild(city);
-//     cityTemp.appendChild(currTemp);
-//     cityTemp.appendChild(feelsLike);
-// };
-
-// /*
-//     This function will delete the child elements which is stored
-//     inside the weather info card
-// */
-// const deleteWeatherInfo = () => {
-//     const cityTemp = document.querySelector(".city-temp");
-//     while (cityTemp.firstChild) {
-//         cityTemp.removeChild(cityTemp.firstChild);
-//     }
-// };
-
-// /*
-//     This function will run either when the city does not exist or
-//     when there is some problem going on in the backend server
-// */
-// const errorTemplate = (image, text) => {
-//     const cityTemp = document.querySelector(".city-temp");
-//     cityTemp.classList.add("city-not-exist");
-
-//     const errorLogoContainer = document.createElement("div");
-//     errorLogoContainer.classList.add("error-logo-container");
-//     const errorLogo = document.createElement("img");
-//     errorLogo.classList.add("error-logo");
-//     errorLogo.src = image;
-//     errorLogoContainer.appendChild(errorLogo);
-//     cityTemp.appendChild(errorLogoContainer);
-
-//     const h3 = document.createElement("h3");
-//     h3.innerText = text;
-//     cityTemp.appendChild(h3);
-// };
-
-// const deleteCityNotFoundTemplate = () => {
-//     const cityTemp = document.querySelector(".city-temp");
-//     cityTemp.classList.remove("city-not-exist");
-//     deleteWeatherInfo();
-// };
-
-// // This function updates the weather inforation
-// const updateCityAndTemp = (weatherInfo) => {
-//     const city = document.querySelector(".city");
-//     const img = document.querySelector("img");
-//     img.classList.add("weather-logo");
-//     const temp = document.querySelector(".temp");
-//     const feelsLike = document.querySelector(".feels-like");
-//     city.innerText = `${weatherInfo.name}, ${weatherInfo.sys.country}`;
-//     temp.innerText = `${Math.round(weatherInfo.main.temp)}°C`;
-//     feelsLike.innerText = `Feels like ${Math.round(
-//         weatherInfo.main.feels_like
-//     )}°C. ${weatherInfo.weather[0].description}.`;
-
-//     if (weatherInfo.weather[0].main === "Thunderstorm") {
-//         img.src = "images/thunderstorm.png";
-//     } else if (weatherInfo.weather[0].main === "Drizzle") {
-//         img.src = "images/drizzle.png";
-//     } else if (weatherInfo.weather[0].main === "Rain") {
-//         img.src = "images/rain.png";
-//     } else if (weatherInfo.weather[0].main === "Snow") {
-//         img.src = "images/snow.png";
-//     } else if (weatherInfo.weather[0].main === "Clear") {
-//         img.src = "images/clear_sky.png";
-//     } else if (weatherInfo.weather[0].main === "Clouds") {
-//         img.src = "images/clouds.png";
-//     } else {
-//         img.src = "images/mist.png";
-//     }
-// };
-
-// // This function creates the overlay and loader functionality
-// const createOverlayAndLoader = () => {
-//     const card = document.getElementById("card");
-//     const overlay = document.createElement("div");
-//     overlay.classList.add("overlay");
-//     const loader = document.createElement("div");
-//     loader.classList.add("loader");
-//     card.appendChild(overlay);
-//     card.appendChild(loader);
-// };
-
-// // This functions deletes the overlay and loader functionality
-// const deleteOverlayAndLoader = () => {
-//     try {
-//         const overlay = document.querySelector(".overlay");
-//         overlay.remove();
-//     } catch (error) {}
-
-//     try {
-//         const loader = document.querySelector(".loader");
-//         loader.remove();
-//     } catch (error) {}
-// };
-
-// This function sends data to the backend
 
 // https://weather-app-6h2o.onrender.com/
 // http://localhost:3000/

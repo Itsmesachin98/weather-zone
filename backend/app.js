@@ -37,6 +37,7 @@ app.post("/latlon", async (req, res) => {
 // It first retrieves the AQI using the `getAqiFromOpenWeather` function, then fetches weather data
 // from OpenWeather's API. If successful, it combines the AQI with the weather data and returns it.
 async function sendLatLonToOpenWeather(lat, lon) {
+    const sunriseAndSunsetTime = await getSunriseAndSunsetTime(lat, lon);
     const cityTime = await getCityLocalTime(lat, lon);
     const aqi = await getAqiFromOpenWeather(lat, lon);
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
@@ -48,6 +49,8 @@ async function sendLatLonToOpenWeather(lat, lon) {
         if (data.cod === 200) {
             data.aqi = aqi.list[0].main.aqi;
             data.formatted = cityTime.formatted;
+            data.sunrise = sunriseAndSunsetTime.daily.sunrise[0];
+            data.sunset = sunriseAndSunsetTime.daily.sunset[0];
             return data;
         }
     } catch (error) {
@@ -57,8 +60,9 @@ async function sendLatLonToOpenWeather(lat, lon) {
 
 // This function sends the city name to openWeather and gives us the response
 async function sendDataToOpenWeather(value) {
-    let cityLat, cityLon;
+    let lat, lon;
     let aqi = "No Data";
+    let formattd = "Unknown";
     let data = null;
 
     // Url to get weather information
@@ -68,8 +72,8 @@ async function sendDataToOpenWeather(value) {
         data = await weatherResponse.json();
 
         if (data.cod === 200) {
-            cityLat = data.coord.lat;
-            cityLon = data.coord.lon;
+            lat = data.coord.lat;
+            lon = data.coord.lon;
         } else {
             return data;
         }
@@ -78,25 +82,19 @@ async function sendDataToOpenWeather(value) {
         return data;
     }
 
-    const cityTime = await getCityLocalTime(cityLat, cityLon);
-    const airPollutionData = await getAqiFromOpenWeather(cityLat, cityLon);
+    const cityTime = await getCityLocalTime(lat, lon);
+    formattd = cityTime.formatted;
+    data.formatted = formattd;
+
+    const airPollutionData = await getAqiFromOpenWeather(lat, lon);
     aqi = airPollutionData.list[0].main.aqi;
     data.aqi = aqi;
-    data.formatted = cityTime.formatted;
+
+    const sunriseAndSunsetTime = await getSunriseAndSunsetTime(lat, lon);
+    data.sunrise = sunriseAndSunsetTime.daily.sunrise[0];
+    data.sunset = sunriseAndSunsetTime.daily.sunset[0];
+
     return data;
-
-    // Url to get Air Qulaity Index (AQI) information
-    // try {
-    //     const aqiInfoUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${cityLat}&lon=${cityLon}&appid=${apiKey}`;
-    //     const aqiResponse = await fetch(aqiInfoUrl);
-    //     const aqiData = await aqiResponse.json();
-    //     aqi = aqiData.list[0].main.aqi;
-    // } catch (error) {
-    //     console.log("Error occurred while fetching weather info ", error);
-    // }
-
-    // data.aqi = aqi;
-    // return data;
 }
 
 async function getAqiFromOpenWeather(lat, lon) {
@@ -121,6 +119,21 @@ async function getCityLocalTime(lat, lon) {
         return data;
     } catch (error) {
         console.log("Error occurred while fetching the timezone url ", error);
+    }
+}
+
+async function getSunriseAndSunsetTime(lat, lon) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=sunrise,sunset&timezone=auto`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(
+            "Error occurred while fetching the sunrise and sunset url: ",
+            error
+        );
     }
 }
 
