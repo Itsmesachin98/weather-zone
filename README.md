@@ -1,162 +1,115 @@
-🌤️ Weather Report Application
-A full-stack Weather Report Application that provides real-time weather information, including:
+# 🌦️ Weather Report Application
 
-Temperature
+A full-stack weather web app that fetches real-time weather data, air quality index (AQI), sunrise/sunset times, and local time for any city or location.
 
-Air Quality Index (AQI)
+---
 
-Sunrise & Sunset Times
+## 🚀 Getting Started
 
-Local Time
+### 1️⃣ Clone the Repository
 
-Geolocation-based weather updates
+```bash
+git clone https://github.com/Itsmesachin98/weather_app.git
+cd weather-app
+```
 
-Built with a modern frontend and Node.js backend, it integrates multiple APIs to dynamically fetch and display data based on city input or current location.
+### 2️⃣ Install Backend Dependencies
 
-🚀 Features
-🌐 Frontend
-🔍 Search by City
-
-Enter a city name to fetch current weather, humidity, wind speed, AQI, and more.
-
-📍 Automatic Location Detection
-
-Uses the Geolocation API to detect your current location and fetch weather data accordingly.
-
-🌦️ Dynamic Weather Icons
-
-Displays weather-specific SVG icons (e.g., sunny, cloudy, rainy).
-
-🕒 Date and Time Display
-
-Shows current date, time, and whether it’s Day or Night based on local time.
-
-⏳ Loading Indicator
-
-Displays a loader while data is being fetched for a smooth user experience.
-
-🖥️ Backend
-🌡️ Weather Data Fetching
-
-Uses OpenWeather API to get current weather and AQI.
-
-🌅 Sunrise and Sunset Times
-
-Fetched using the Open-Meteo API.
-
-⏰ Local Time Retrieval
-
-Uses TimeZoneDB API to display city’s local time.
-
-⚠️ Robust Error Handling
-
-Handles invalid inputs, denied location permissions, and API failures gracefully.
-
-🛠️ Technologies Used
-Frontend:
-HTML5
-
-CSS3
-
-JavaScript (ES6)
-
-Geolocation API
-
-Backend:
-Node.js
-
-Express.js
-
-dotenv (for managing API keys)
-
-CORS (for cross-origin requests)
-
-APIs:
-OpenWeather API – Weather & AQI data
-
-Open-Meteo API – Sunrise & sunset times
-
-TimeZoneDB API – Local time data
-
-📦 Project Structure
-pgsql
-Copy
-Edit
-Weather App/
-├── backend/
-│ ├── app.js
-│ ├── .env
-│ ├── node_modules/
-│ ├── package.json
-│ └── package-lock.json
-├── frontend/
-│ ├── index.html
-│ ├── style.css
-│ └── script.js
-├── .gitignore
-└── README.md
-⚙️ Installation & Setup
-🔧 Prerequisites
-Node.js installed
-
-API Keys for:
-
-OpenWeather API
-
-TimeZoneDB API
-
-📝 Steps
-Clone the repository
-
-bash
-Copy
-Edit
-git clone <repo_url>
-cd "Weather App"
-Install dependencies
-
-bash
-Copy
-Edit
+```bash
 cd backend
 npm install
-Create .env file In the backend/ folder, add:
+```
 
-env
-Copy
-Edit
-OPENWEATHER_API_KEY=your_key_here
-TIMEZONEDB_API_KEY=your_key_here
-Start the server
+### 3️⃣ Configure Environment Variables
 
-bash
-Copy
-Edit
+Create a `.env` file inside the `backend` folder and add:
+
+```env
+OPENWEATHER_API_KEY=your_openweather_api_key
+TIMEZONEDB_API_KEY=your_timezonedb_api_key
+```
+
+### 4️⃣ Start the Server
+
+```bash
 node app.js
-Open the App Open frontend/index.html in your browser.
+```
 
-🔮 Future Enhancements
-✅ Add unit tests for frontend/backend
+### 5️⃣ Open the App in Browser
 
-📱 Improve responsive design for mobile
+Simply open the following file in your browser:
 
-❌ Better error messages for invalid inputs
+```bash
+frontend/index.html
+```
 
-📊 Add hourly/weekly forecasts and detailed AQI info
+---
 
-📜 License
-This project is licensed under the MIT License.
-Feel free to use, modify, and distribute.
+## 📂 Folder Structure
 
-🙏 Acknowledgments
-OpenWeather API
+```bash
+📁 Weather App
+│
+├── 📁 backend
+│   ├── app.js                # Node.js + Express backend logic
+│   ├── .env                  # API keys
+│   ├── package.json          # Project metadata and dependencies
+│   ├── package-lock.json     # Dependency lock file
+│   └── node_modules/         # Installed dependencies
+│
+├── 📁 frontend
+│   ├── index.html            # Main UI
+│   ├── style.css             # Styling and layout
+│   └── script.js             # Frontend logic and API requests
+│
+├── .gitignore                # Git ignored files
+└── README.md                 # Project documentation
+```
 
-Open-Meteo API
+---
 
-TimeZoneDB API
+## 💡 Future Improvements
 
-MDN Web Docs – for JavaScript and Geolocation API references.
+-   ✅ Responsive mobile-friendly design
+-   ✅ User-friendly error messages
+-   🔁 Hourly and Weekly weather forecast
+-   📊 Detailed AQI breakdown
+-   🌙 Dark mode toggle
+-   🧪 Unit testing support
 
-🤝 Contributing
-Contributions are welcome!
-Feel free to open issues or submit pull requests. 😊
+---
+
+## 🫡 Acknowledgments
+
+-   [OpenWeather API](https://openweathermap.org/)
+-   [Open-Meteo API](https://open-meteo.com/)
+-   [TimeZoneDB API](https://timezonedb.com/)
+-   [MDN Web Docs](https://developer.mozilla.org/)
+
+---
+
+## 🤝 Contributing
+
+Contributions are always welcome!
+
+1. Fork the repo
+2. Create a branch
+    ```bash
+    git checkout -b feature/your-feature
+    ```
+3. Commit your changes
+    ```bash
+    git commit -m 'Add something cool'
+    ```
+4. Push to your fork
+    ```bash
+    git push origin feature/your-feature
+    ```
+5. Open a pull request 🚀
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.  
+Feel free to use, modify, and distribute for personal or commercial use.
