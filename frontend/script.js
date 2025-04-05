@@ -1,7 +1,8 @@
 const searchBtn = document.getElementById("search-btn");
 const cityName = document.getElementById("city-name");
 const weatherIconContainer = document.querySelector(".weather-icon-container");
-let allWeatherData;
+
+let weatherDetails;
 
 const weatherSvgs = {
     Thunderstrom: `<svg class="weather-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
@@ -52,49 +53,23 @@ window.addEventListener("load", async () => {
 
     try {
         const userLocation = await getUserLocation();
-        allWeatherData = await sendLatLonToBackend(
+        weatherDetails = await sendLatLonToBackend(
             userLocation.lat,
             userLocation.lon
         );
 
-        if (allWeatherData === null) {
-            console.log("Error occured");
+        if (weatherDetails === null || weatherDetails === 404) {
+            alert("Some error occurred");
+        } else if (weatherDetails.cod === 200) {
+            updateWeatherInfo(weatherDetails);
         } else {
-            updateWeatherInfo(allWeatherData);
-            deleteOverlayAndLoader();
+            alert("Unable to find city");
         }
     } catch (error) {
-        console.error("Failed to get location:", error);
-    } finally {
-        deleteOverlayAndLoader();
+        console.error("Failed to get location: ", error);
     }
 
-    // const userLocation = getUserLocation();
-    // allWeatherData = await sendLatLonToBackend(
-    //     userLocation.lat,
-    //     userLocation.lon
-    // );
-
-    // // allWeatherData = await sendDataToBacked("Godda");
-    // if (allWeatherData === null) {
-    //     console.log("Error occured");
-    // } else {
-    //     updateWeatherInfo(allWeatherData);
-    //     deleteOverlayAndLoader();
-    // }
-
-    // if (allWeatherData === 404) {
-    //     errorTemplate("images/error.png", "404 Error Occured!");
-    // } else {
-    //     if (numberOfChildren() === 2) {
-    //         deleteWeatherInfo();
-    //     }
-
-    //     // createCityAndTemp();
-    //     // getDateAndTime();
-    //     // updateCityAndTemp(allWeatherData);
-    // }
-    // deleteOverlayAndLoader();
+    deleteOverlayAndLoader();
 });
 
 // ============== EVENT LISTENERS ==============
@@ -105,13 +80,24 @@ searchBtn.addEventListener("click", async () => {
     }
 
     createOverlayAndLoader();
-    allWeatherData = await sendDataToBacked(cityName.value);
-    updateWeatherInfo(allWeatherData);
+
+    weatherDetails = await sendDataToBacked(cityName.value);
+    if (weatherDetails === null || weatherDetails === 404) {
+        alert("Some error occurred");
+    } else if (weatherDetails.cod === 200) {
+        updateWeatherInfo(weatherDetails);
+    } else {
+        alert("Unable to find city");
+    }
+
     deleteOverlayAndLoader();
 });
 
 // ============== FUNCTIONS ==============
 
+// Retrieves the user's current geographic location using the Geolocation API.
+// Returns a Promise that resolves with an object containing latitude and longitude.
+// If location access is denied or an error occurs, the Promise is rejected with an error message.
 function getUserLocation() {
     return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
@@ -134,6 +120,9 @@ function getUserLocation() {
     });
 }
 
+// Returns the current date details as an object.
+// Includes the day, day name (e.g., "Monday"), month name (e.g., "Jan"), and year.
+// Example output: { day: 5, dayName: "Saturday", monthName: "Apr", year: 2025 }
 function getCurrentDate() {
     const date = new Date();
     const day = date.getDate();
@@ -171,6 +160,9 @@ function getCurrentDate() {
     return { day, dayName, monthName, year };
 }
 
+// Converts a given time string (e.g., "2025-04-05T06:30:00") into a 12-hour format with AM/PM.
+// Example output: "6:30 AM" or "6:30 PM".
+// Handles edge cases like hour 0 by converting it to 12.
 function formattedSunriseSunsetTime(time) {
     const timeStr = time;
     const date = new Date(timeStr);
@@ -195,6 +187,9 @@ function formattedSunriseSunsetTime(time) {
     return formattedTime;
 }
 
+// Converts a given time string (e.g., "14:30") into a 12-hour format with AM/PM.
+// Also determines whether the time corresponds to "Day" (6 AM to 6 PM) or "Night".
+// Returns an object containing the formatted time and the period (Day/Night).
 function formatTimeTo12Hour(currTime) {
     const time = currTime;
     const [hour, minute] = time.split(":").map(Number);
@@ -210,6 +205,8 @@ function formatTimeTo12Hour(currTime) {
     return { formattedTime, period };
 }
 
+// Creates an overlay with a loader element and inserts it into the DOM.
+// The overlay is displayed while data is being fetched to indicate loading.
 function createOverlayAndLoader() {
     const scriptTag = document.querySelector("script");
     const overlay = document.createElement("div");
@@ -222,6 +219,8 @@ function createOverlayAndLoader() {
     document.body.insertBefore(overlay, scriptTag);
 }
 
+// Removes the overlay and loader element from the DOM if it exists.
+// This is used to hide the loading indicator once data fetching is complete.
 function deleteOverlayAndLoader() {
     if (document.querySelector(".overlay")) {
         document.querySelector(".overlay").remove();
@@ -239,7 +238,7 @@ function capilazeWeatherDescription(description) {
 
 function updateWeatherInfo(weatherInfo) {
     const formattedTimeAndPeriod = formatTimeTo12Hour(
-        weatherInfo.formatted.substring(11, 16)
+        weatherInfo.localTime.substring(11, 16)
     );
 
     // Update the date displayed on the page in the format: "Day Month Year" (e.g., "2 Apr 2025")
