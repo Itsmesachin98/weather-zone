@@ -8,7 +8,7 @@ const app = express();
 // app.use(cors());
 app.use(
     cors({
-        origin: "weather-app-khaki-delta-94.vercel.app", // Replace with your frontend domain
+        origin: "https://weather-app-khaki-delta-94.vercel.app", // Replace with your frontend domain
     })
 );
 
