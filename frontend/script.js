@@ -344,7 +344,7 @@ async function sendDataToBacked(city) {
     const data = { city };
 
     try {
-        const response = await fetch("http://localhost:3000/", {
+        const response = await fetch("https://weather-app-6h2o.onrender.com/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -363,13 +363,16 @@ async function sendLatLonToBackend(lat, lon) {
     const data = { lat, lon };
 
     try {
-        const response = await fetch("http://localhost:3000/latlon", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
+        const response = await fetch(
+            "https://weather-app-6h2o.onrender.com/latlon",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }
+        );
 
         const weatherData = await response.json();
         return weatherData;
