@@ -381,5 +381,4 @@ async function sendLatLonToBackend(lat, lon) {
     }
 }
 
-// https://weather-app-6h2o.onrender.com/
 // http://localhost:3000/
