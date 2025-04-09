@@ -5,7 +5,13 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-app.use(cors());
+// app.use(cors());
+app.use(
+    cors({
+        origin: "weather-app-khaki-delta-94.vercel.app", // Replace with your frontend domain
+    })
+);
+
 app.use(express.json());
 
 // ===================== ROUTES =====================
