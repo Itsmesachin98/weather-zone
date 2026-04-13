@@ -55,7 +55,7 @@ window.addEventListener("load", async () => {
         const userLocation = await getUserLocation();
         weatherDetails = await sendLatLonToBackend(
             userLocation.lat,
-            userLocation.lon
+            userLocation.lon,
         );
 
         if (weatherDetails === null || weatherDetails === 404) {
@@ -111,7 +111,7 @@ function getUserLocation() {
                 (error) => {
                     console.error("Error getting location:", error);
                     reject(error);
-                }
+                },
             );
         } else {
             console.log("Geolocation is not supported by this browser.");
@@ -238,7 +238,7 @@ function capilazeWeatherDescription(description) {
 
 function updateWeatherInfo(weatherInfo) {
     const formattedTimeAndPeriod = formatTimeTo12Hour(
-        weatherInfo.localTime.substring(11, 16)
+        weatherInfo.localTime.substring(11, 16),
     );
 
     // Update the date displayed on the page in the format: "Day Month Year" (e.g., "2 Apr 2025")
@@ -251,9 +251,8 @@ function updateWeatherInfo(weatherInfo) {
         getCurrentDate().dayName
     }, ${formattedTimeAndPeriod.formattedTime}`;
 
-    document.querySelector(
-        ".day-status"
-    ).innerText = `${formattedTimeAndPeriod.period}`;
+    document.querySelector(".day-status").innerText =
+        `${formattedTimeAndPeriod.period}`;
 
     const weatherMain = weatherInfo.weather[0].main;
     const weatherDescription = weatherInfo.weather[0].description;
@@ -288,63 +287,72 @@ function updateWeatherInfo(weatherInfo) {
     }
 
     document.querySelector(".temp").innerHTML = `${Math.round(
-        weatherInfo.main.temp
+        weatherInfo.main.temp,
     )}&deg;C`;
 
-    document.getElementById(
-        "sky-status"
-    ).innerText = `${capilazeWeatherDescription(
-        weatherInfo.weather[0].description
-    )}`;
+    document.getElementById("sky-status").innerText =
+        `${capilazeWeatherDescription(weatherInfo.weather[0].description)}`;
 
-    document.getElementById(
-        "location"
-    ).innerText = `${weatherInfo.name}, ${weatherInfo.sys.country}`;
+    document.getElementById("location").innerText =
+        `${weatherInfo.name}, ${weatherInfo.sys.country}`;
 
     document.getElementById("wind-speed").innerHTML = `${Math.round(
-        weatherInfo.wind.speed
+        weatherInfo.wind.speed,
     )}km/s`;
 
-    document.getElementById(
-        "humidity"
-    ).innerText = `${weatherInfo.main.humidity}%`;
+    document.getElementById("humidity").innerText =
+        `${weatherInfo.main.humidity}%`;
 
     document.getElementById("real-feel").innerHTML = `${Math.round(
-        weatherInfo.main.feels_like
+        weatherInfo.main.feels_like,
     )}&deg;C`;
 
     document.getElementById("aqi").innerText = `${weatherInfo.aqi}`;
 
-    document.getElementById(
-        "pressure"
-    ).innerText = `${weatherInfo.main.pressure}`;
+    document.getElementById("pressure").innerText =
+        `${weatherInfo.main.pressure}`;
 
     document.getElementById("visibility").innerText = `${
         weatherInfo.visibility / 1000
     }km`;
 
     document.getElementById("min-temp").innerHTML = `${Math.round(
-        weatherInfo.main.temp_min
+        weatherInfo.main.temp_min,
     )}&deg;C`;
 
     document.getElementById("max-temp").innerHTML = `${Math.round(
-        weatherInfo.main.temp_min
+        weatherInfo.main.temp_min,
     )}&deg;C`;
 
-    document.getElementById(
-        "sunrise-time"
-    ).innerText = `${formattedSunriseSunsetTime(weatherInfo.sunrise)}`;
+    document.getElementById("sunrise-time").innerText =
+        `${formattedSunriseSunsetTime(weatherInfo.sunrise)}`;
 
-    document.getElementById(
-        "sunset-time"
-    ).innerText = `${formattedSunriseSunsetTime(weatherInfo.sunset)}`;
+    document.getElementById("sunset-time").innerText =
+        `${formattedSunriseSunsetTime(weatherInfo.sunset)}`;
 }
+
+const config = {
+    development: {
+        BASE_URL: "http://localhost:3000",
+    },
+    production: {
+        BASE_URL: "https://weather-app-6h2o.onrender.com",
+    },
+};
+
+const isLocalhost =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1";
+
+const ENV = isLocalhost ? "development" : "production";
+
+const BASE_URL = config[ENV].BASE_URL;
 
 async function sendDataToBacked(city) {
     const data = { city };
 
     try {
-        const response = await fetch("https://weather-app-6h2o.onrender.com/", {
+        const response = await fetch(BASE_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -363,16 +371,13 @@ async function sendLatLonToBackend(lat, lon) {
     const data = { lat, lon };
 
     try {
-        const response = await fetch(
-            "https://weather-app-6h2o.onrender.com/latlon",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            }
-        );
+        const response = await fetch(`${BASE_URL}/latlon`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
 
         const weatherData = await response.json();
         return weatherData;
@@ -380,5 +385,3 @@ async function sendLatLonToBackend(lat, lon) {
         return 404;
     }
 }
-
-// http://localhost:3000/

@@ -7,9 +7,29 @@ const app = express();
 
 app.use(
     cors({
-        origin: "https://weather-app-khaki-delta-94.vercel.app",
-    })
+        origin: process.env.CLIENT_URL,
+    }),
 );
+
+// const allowedOrigins = [
+//     process.env.CLIENT_URL,
+//     "https://weather-app-khaki-delta-94.vercel.app",
+// ];
+
+// app.use(
+//     cors({
+//         origin: function (origin, callback) {
+//             // allow requests with no origin (Postman, curl, mobile apps)
+//             if (!origin) return callback(null, true);
+
+//             if (allowedOrigins.includes(origin)) {
+//                 return callback(null, true);
+//             } else {
+//                 return callback(new Error("Not allowed by CORS"));
+//             }
+//         },
+//     }),
+// );
 
 app.use(express.json());
 
@@ -52,7 +72,7 @@ async function sendLatLonToOpenWeather(lat, lon) {
         if (data.cod === 200) {
             const sunriseAndSunsetTime = await getSunriseAndSunsetTime(
                 lat,
-                lon
+                lon,
             );
             data.sunrise = sunriseAndSunsetTime.sunriseTime;
             data.sunset = sunriseAndSunsetTime.sunsetTime;
@@ -125,7 +145,7 @@ async function getSunriseAndSunsetTime(lat, lon) {
     } catch (error) {
         console.log(
             "Error occurred while fetching the sunrise and sunset url: ",
-            error
+            error,
         );
     }
 
