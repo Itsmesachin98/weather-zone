@@ -11,26 +11,6 @@ app.use(
     }),
 );
 
-// const allowedOrigins = [
-//     process.env.CLIENT_URL,
-//     "https://weather-app-khaki-delta-94.vercel.app",
-// ];
-
-// app.use(
-//     cors({
-//         origin: function (origin, callback) {
-//             // allow requests with no origin (Postman, curl, mobile apps)
-//             if (!origin) return callback(null, true);
-
-//             if (allowedOrigins.includes(origin)) {
-//                 return callback(null, true);
-//             } else {
-//                 return callback(new Error("Not allowed by CORS"));
-//             }
-//         },
-//     }),
-// );
-
 app.use(express.json());
 
 // ===================== ROUTES =====================
@@ -196,7 +176,7 @@ async function getCityLocalTime(lat, lon) {
 }
 
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    // console.log(`Server running on http://localhost:${PORT}`);
 });
